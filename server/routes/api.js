@@ -41,4 +41,21 @@ router.put("/update", function (request, response) {
   });
 });
 
+router.get("/expense/:group", function (request, response) {
+  const groupParameter = request.params.group;
+  Expense.aggregate([
+    {
+      $match: { group: groupParameter },
+    },
+    {
+      $group: {
+        _id: "$group",
+        totalSalaries: { $sum: "$amount" },
+      },
+    },
+  ]).exec(function (err, expenses) {
+    response.send(expenses);
+  });
+});
+
 module.exports = router;
