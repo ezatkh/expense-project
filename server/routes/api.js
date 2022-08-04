@@ -28,4 +28,17 @@ router.post("/expense", function (request, response) {
   response.send(expenseInstance);
 });
 
+router.put("/update", function (request, response) {
+  const group1 = request.body.group1;
+  const group2 = request.body.group2;
+
+  Expense.findOneAndUpdate(
+    { group: group1 },
+    { group: group2 },
+    { new: true }
+  ).exec(function (err, expense) {
+    response.send(expense);
+  });
+});
+
 module.exports = router;
